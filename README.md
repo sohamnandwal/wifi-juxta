@@ -11,7 +11,7 @@ This can be explained with interesting examples.
 
 -  Suppose I am at an event with a local Wi-fi, but I want to know where a particular stall is there. Our Webpage is the best solution for it. No need to have any contacts, just open and ask what you want. Of course one can physically go and ask for it.
 
--   If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance in the server. No common network required, such things would be really useful for tourists.
+- If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance in the server. No common network required, such things would be really useful for **tourists**.
 
 ##  Core Features
 
@@ -80,27 +80,7 @@ This can be explained with interesting examples.
   - Input font-size 16px (prevents iOS zoom)
   - No horizontal overflow
   - Full-width responsive layouts
-
-### Reliability & Performance
-- **Error Handling**:
-  - Socket.io frame error monitoring
-  - localStorage quota fallback
-  - Graceful degradation
-  - Detailed console logging
-  
-- **Performance**:
-  - Image compression (~80% size reduction)
-  - BallTree spatial indexing
-  - Location throttling (3-5s updates)
-  - Lazy map loading
-  
-- **Data Persistence**:
-  - localStorage for profiles
-  - Fallback strategy if quota exceeded
-  - Local-only storage (no backend persistence)
-
 ---
-
 ## Technology Stack
 
 ### Backend
@@ -109,15 +89,15 @@ This can be explained with interesting examples.
 - **Language**: Python 3.7+
 - **Spatial Indexing**: BallTree for efficient proximity queries
 - **Geolocation**: Haversine formula for GPS distance calculation
-- **Protocol**: Socket.io 4.0.1+ with WebSocket + long-polling fallback
+- **Protocol**: Socket.io with WebSocket + long-polling fallback
 
 ### Frontend
 - **Code**: Vanilla JavaScript 
-- **Maps**: Leaflet.js 1.9.4 + OpenStreetMap tiles
+- **Maps**: Leaflet.js OpenStreetMap tiles
 - **Images**: Canvas API for compression & resizing
 - **Files**: HTML5 File API for file handling
-- **Communication**: Socket.io Client 4.0.1+
-- **Styling**: Pure CSS3 (1900+ lines, fully responsive)
+- **Communication**: Socket.io Client
+- **Styling**: Pure CSS3 
 
 ### Infrastructure
 - **Protocol**: WebSocket via Socket.io with long-polling fallback
