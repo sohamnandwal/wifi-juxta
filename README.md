@@ -5,13 +5,13 @@
 ---
 ## Why Wi-fi Juxta?
 This can be explained with interesting examples.
-- **1.** Suppose I need a mobile charger in the library. But I do not know anybody around me. Going to everyone and asking is time killing and usually not so welcoming from the asked person. With our webpage everyone on the local Wi-fi can chat and also share files with each other without any login required. Just chat, share and leave.
+-  Suppose I need a mobile charger in the library. But I do not know anybody around me. Going to everyone and asking is time killing and usually not so welcoming from the asked person. With our webpage everyone on the local Wi-fi can chat and also share files with each other without any login required. Just chat, share and leave.
 
-- **2.** Suppose there is a boring lecture going on in the lecture hall. But the students are from different classes. With our webpage one can easily converse messages with everyone in the hall with no prior contacts required, just join and chat. One can also exchange files and photos making the chat a more usable.
+- Suppose there is a boring lecture going on in the lecture hall. But the students are from different classes. With our webpage one can easily converse messages with everyone in the hall with no prior contacts required, just join and chat. One can also exchange files and photos making the chat a more usable.
 
--  **3.** Suppose I am at an event with a local Wi-fi, but I want to know where a particular stall is there. Our Webpage is the best solution for it. No need to have any contacts, just open and ask what you want. Of course one can physically go and ask for it.
+-  Suppose I am at an event with a local Wi-fi, but I want to know where a particular stall is there. Our Webpage is the best solution for it. No need to have any contacts, just open and ask what you want. Of course one can physically go and ask for it.
 
--  **4. If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance. No common network required**
+-   If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance. No common network required
 
 ##  Core Features
 
