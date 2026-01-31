@@ -148,10 +148,9 @@ This can be explained with interesting examples.
 
 ## Credits & Acknowledgments
 
-- **Leaflet.js** - Interactive map visualization
-- **Flask-SocketIO** - Real-time WebSocket communication
-- **OpenStreetMap** - Free map tiles and data
-- **Socket.io** - Cross-browser WebSocket protocol
+- **the-procrastronauts** - Reference for Proxity chat algorithm (https://github.com/UBH-Fall-2024/the-procrastronauts)
+- **Leaflet.js** & **OpenStreetMap**  - Interactive map visualization
+- **Flask-SocketIO** &  **Socket.io**-  WebSocket 
 - **Canvas API** - Image processing and compression
 - **Haversine Formula** - GPS distance calculation
 
