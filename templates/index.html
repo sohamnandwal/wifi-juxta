@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Wi-Fi Juxta</title>
+	<!-- <link rel="stylesheet" href="styles.css" /> -->
+	<link rel="stylesheet" href="/static/styles.css" />
+	<link rel="shortcut icon" href="/static/favicon.jpeg" type="image/png">
+	<!-- Leaflet CSS for Map -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+
+<body>
+	<!-- Setup Dialog Modal -->
+	<div id="setupModal" class="modal">
+		<div class="modal-content modal-scrollable">
+			<div class="modal-header">
+				<h2>Welcome to Wi-Fi Juxta</h2>
+				<button type="button" class="modal-close-btn" id="setupCloseBtn">&times;</button>
+			</div>
+			<form id="setupForm">
+				<div class="form-group">
+					<label for="nameInput">Your Name (required)</label>
+					<input type="text" id="nameInput" name="name" required placeholder="Enter your name">
+				</div>
+
+				<div class="form-group">
+					<label for="profilePic">Profile Picture (optional)</label>
+					<input type="file" id="profilePic" name="profilePic" accept="image/*">
+					<div id="profilePreview" class="profile-preview"></div>
+				</div>
+
+				<div class="form-group checkbox">
+					<input type="checkbox" id="locationConsent" name="locationConsent" required>
+					<label for="locationConsent">I consent to share my location with nearby users</label>
+				</div>
+
+				<!-- Background Customization Section -->
+				<div class="form-section-divider">Background Customization</div>
+
+				<div class="form-group">
+					<label for="backgroundImage">Background Image (optional)</label>
+					<input type="file" id="backgroundImage" name="backgroundImage" accept="image/*">
+					<div id="backgroundPreview" class="background-preview"></div>
+				</div>
+
+				<div class="form-group">
+					<label>Background Color - RGB Picker</label>
+					<div class="rgb-picker">
+						<div class="rgb-slider-group">
+							<label for="redSlider">Red</label>
+							<input type="range" id="redSlider" name="red" min="0" max="255" value="24" class="rgb-slider">
+							<input type="number" id="redValue" min="0" max="255" value="24" class="rgb-value-input">
+						</div>
+						<div class="rgb-slider-group">
+							<label for="greenSlider">Green</label>
+							<input type="range" id="greenSlider" name="green" min="0" max="255" value="40" class="rgb-slider">
+							<input type="number" id="greenValue" min="0" max="255" value="40" class="rgb-value-input">
+						</div>
+						<div class="rgb-slider-group">
+							<label for="blueSlider">Blue</label>
+							<input type="range" id="blueSlider" name="blue" min="0" max="255" value="40" class="rgb-slider">
+							<input type="number" id="blueValue" min="0" max="255" value="40" class="rgb-value-input">
+						</div>
+						<div class="rgb-display">
+							<div id="colorPreview" class="color-preview"></div>
+							<div id="rgbCode">rgb(24, 40, 40)</div>
+						</div>
+					</div>
+				</div>
+
+				<button type="submit" class="submit-btn">Start Chatting</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Main Chat Container -->
+	<div class="chat-container">
+		<!-- Header with Settings Button -->
+		<div class="chat-header">
+			<div class="header-left">
+				<h1>Wi-Fi Juxta</h1>
+			</div>
+			<div class="header-right">
+				<button id="settingsBtn" class="settings-btn" title="Edit Profile">⚙️</button>
+			</div>
+		</div>
+
+		<!-- Messages Area -->
+		<div id="messages" class="messages">
+			<p class="message-status"><i id="messageStart">Waiting...</i></p>
+			<div class="message-margin"></div>
+		</div>
+
+		<!-- Floating Control Panel -->
+		<div class="floating-control-panel">
+			<!-- Location Info -->
+			<div class="location-info" id="locationContainer">
+				<div class="location-label">📍</div>
+				<p id="location" class="location-text">--.----º</p>
+			</div>
+
+			<!-- Message Input Area -->
+			<div class="message-input-container">
+				<!-- File Attachment Input -->
+				<input type="file" id="fileAttachment" accept="image/*,.pdf,.doc,.docx,.txt" style="display: none;">
+				<button id="attachBtn" class="control-btn attach-btn" title="Attach file">
+					📎
+				</button>
+				
+				<input type="text" name="message" id="messageInput" disabled placeholder="Type a message..." class="message-input-field" />
+				
+				<!-- Circular Send Button -->
+				<button id="messageButton" class="circular-send-btn" title="Send message">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<line x1="22" y1="2" x2="11" y2="13"></line>
+						<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+					</svg>
+				</button>
+
+				<!-- Map Button -->
+				<button id="locateButton" class="control-btn map-btn" title="View nearby users">
+					🗺️
+				</button>
+			</div>
+
+			<!-- File Preview -->
+			<div id="filePreview" class="file-preview hidden">
+				<div class="file-preview-content">
+					<span id="fileName" class="file-name"></span>
+					<button id="removeFileBtn" class="remove-file-btn">✕</button>
+				</div>
+			</div>
+
+			<!-- Upload Loading Indicator -->
+			<div id="uploadLoading" class="upload-loading hidden">
+				<div class="loading-spinner"></div>
+				<span class="loading-text">Uploading...</span>
+			</div>
+
+			<!-- Presence Info -->
+			<div class="presence-info">
+				<p id="messagePresence" class="presence-text">Waiting for server...</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Map Modal -->
+	<div id="mapModal" class="modal map-modal hidden">
+		<div class="map-modal-content">
+			<div class="map-header">
+				<h2>Nearby Users Map</h2>
+				<button id="closeMapBtn" class="close-btn">&times;</button>
+			</div>
+			<div id="map" class="map-container"></div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+		integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+		crossorigin="anonymous"></script>
+	<!-- Leaflet JS for Map -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+	<script src="/static/index.js"></script>
+</body>
+
+</html>
