@@ -101,20 +101,10 @@ This can be explained with interesting examples.
 
 ### Infrastructure
 - **Protocol**: WebSocket via Socket.io with long-polling fallback
-- **Concurrency**: Supports up to 5,000 concurrent users
 - **CORS**: Enabled for cross-origin requests
 - **SSL/TLS**: Supported for production (required for geolocation)
 
----
-
-##System Requirements
-
-- **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+ (or latest mobile browsers)
-- **Device**: Any device with geolocation capability (GPS recommended)
-- **Network**: Stable internet connection (WiFi or mobile data)
-- **Storage**: ~10MB localStorage (varies by browser)
-- **Backend**: Python 3.7+ with pip
-
+  
 ---
 ## Security & Privacy
 
