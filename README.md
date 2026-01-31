@@ -11,7 +11,7 @@ This can be explained with interesting examples.
 
 -  Suppose I am at an event with a local Wi-fi, but I want to know where a particular stall is there. Our Webpage is the best solution for it. No need to have any contacts, just open and ask what you want. Of course one can physically go and ask for it.
 
--   If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance. No common network required
+-   If our webpage is on the internet, then technically one can talk with anybody with in the desired range of distance in the server. No common network required, such things would be really useful for tourists.
 
 ##  Core Features
 
