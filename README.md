@@ -154,6 +154,6 @@
 
 *Juxta - Connect. Share. Chat Locally. Make spontaneous local connections in real-time.*
 
-**Perfect for hackathons, local events, and spontaneous meetups!**
+**Perfect for boring classes, local events, and silent Libraries !**
 
 </div>
