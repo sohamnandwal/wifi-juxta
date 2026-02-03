@@ -7,8 +7,8 @@ from octree import node, octree, quadtree, balltree
 
 UPDATE_RANGE = 3
 RANGE = 3500        #maximum distance for communication in meters
-ER = 6366707.0195 #Earth Radius in Meters
-MAX_USERS = 5000       # Maximum concurrent users
+ER = 6366707.0195 #earth radius in m
+MAX_USERS = 5000       # maximum live users
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -21,7 +21,6 @@ tree = balltree()
 
 USETREE = True
 
-# https://en.wikipedia.org/wiki/Haversine_formula
 def haversine(p1, p2):
     lat1, lon1, lat2, lon2 = map(math.radians, [p1[0], p1[1], p2[0], p2[1]])
     a = math.sin((lat2 - lat1)/2)**2
@@ -39,14 +38,11 @@ def find_targets(id):
         for t in o:
             if t.id is not None:
                 s[t.id] = t
-                # print(f'found {t.id}')
         for i, p in s.items():
             targets.append(i)
-        # print(f'found {len(targets)} nearby {n.get_coord()} {n.id}')
     else:
         for i, o in clients.items():
             dist = haversine(n.get_coord(), o.get_coord())
-            # print (f"people are {dist}m apart")
             if  dist < RANGE:
                 targets.append(i)
     return targets
@@ -72,7 +68,7 @@ def join(content):
     if data['id'] not in clients:
         clients[data['id']] = node(data['id'], data['lat'], data['lon'])
     
-    # Store user profile data
+    # User data
     if 'name' in data:
         clients[data['id']].name = data['name']
     if 'profilePicture' in data:
@@ -81,14 +77,13 @@ def join(content):
         clients[data['id']].locationConsent = data['locationConsent']
     
     if USETREE:
-        # clients[data['id']].remove()
         tree.insert(clients[data['id']])
     
-    # Send join notification to nearby users
+    # Joining notification
     user_name = data.get('name', 'Someone')
     targets = find_targets(data['id'])
     for target_id in targets:
-        if target_id != data['id']:  # Don't send to self
+        if target_id != data['id']: 
             notification = {
                 'from': 'SYSTEM',
                 'msg': f'{user_name} is ready to Juxt.',
@@ -111,11 +106,10 @@ def message(content):
                      (data['lat'], data['lon'])) > UPDATE_RANGE:
             clients[data['id']].update_location(data['lat'], data['lon'])
             if USETREE:
-                #tree.build_tree(tree.points)
                 clients[data['id']].remove()
                 tree.insert(clients[data['id']])
     
-    # Store user profile data
+    # user data
     if 'name' in data:
         clients[data['id']].name = data['name']
     if 'profilePicture' in data:
@@ -129,11 +123,10 @@ def message(content):
     out['name'] = data.get('name', 'Unknown')
     out['profilePicture'] = data.get('profilePicture', None)
     
-    # Include attachment if present
     if 'attachment' in data:
         out['attachment'] = data['attachment']
     
-    # Allow empty messages if attachment exists, otherwise require message text
+    # empty msg attachments
     has_attachment = 'attachment' in data
     if out['msg'] == '' and not has_attachment:
         socketio.emit('bad', 'Cannot Send Empty Message', to=data['id'])
@@ -158,7 +151,6 @@ def update(content):
                      (data['lat'], data['lon'])) > UPDATE_RANGE:
             clients[data['id']].update_location(data['lat'], data['lon'])
             if USETREE:
-                #tree.build_tree(tree.points)
                 # print("updating value")
                 clients[data['id']].remove()
                 tree.insert(clients[data['id']])
