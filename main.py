@@ -7,8 +7,8 @@ from octree import node, octree, quadtree, balltree
 
 UPDATE_RANGE = 3
 RANGE = 3500        #maximum distance for communication in meters
-ER = 6366707.0195 #Earth Radius in Meters
-MAX_USERS = 5000       # Maximum concurrent users
+ER = 6366707.0195 #earth radius in m
+MAX_USERS = 5000       # maximum live users
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -68,7 +68,7 @@ def join(content):
     if data['id'] not in clients:
         clients[data['id']] = node(data['id'], data['lat'], data['lon'])
     
-    # Store user profile data
+    # User data
     if 'name' in data:
         clients[data['id']].name = data['name']
     if 'profilePicture' in data:
@@ -79,7 +79,7 @@ def join(content):
     if USETREE:
         tree.insert(clients[data['id']])
     
-    # Send join notification to nearby users
+    # Joining notification
     user_name = data.get('name', 'Someone')
     targets = find_targets(data['id'])
     for target_id in targets:
@@ -109,7 +109,7 @@ def message(content):
                 clients[data['id']].remove()
                 tree.insert(clients[data['id']])
     
-    # Store user profile data
+    # user data
     if 'name' in data:
         clients[data['id']].name = data['name']
     if 'profilePicture' in data:
@@ -126,7 +126,7 @@ def message(content):
     if 'attachment' in data:
         out['attachment'] = data['attachment']
     
-    # Allow empty messages if attachment exists, otherwise require message text
+    # empty msg attachments
     has_attachment = 'attachment' in data
     if out['msg'] == '' and not has_attachment:
         socketio.emit('bad', 'Cannot Send Empty Message', to=data['id'])
