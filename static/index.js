@@ -67,20 +67,17 @@ attachBtn.onclick = () => {
     fileAttachmentInput.click();
 };
 
-// Max file size: 5MB
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 fileAttachmentInput.onchange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        // Check file size
         if (file.size > MAX_FILE_SIZE) {
             alert(`File size exceeds 5MB limit (${(file.size / 1024 / 1024).toFixed(2)}MB). Please choose a smaller file.`);
             fileAttachmentInput.value = '';
             return;
         }
 
-        // Compress image if it's an image file
         if (file.type.startsWith('image/')) {
             compressImage(file).then((compressedData) => {
                 currentAttachment = {
@@ -92,7 +89,6 @@ fileAttachmentInput.onchange = (event) => {
                 showFilePreview(file.name);
             }).catch((error) => {
                 console.error('Error compressing file:', error);
-                // Fallback to original
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     currentAttachment = {
@@ -106,7 +102,6 @@ fileAttachmentInput.onchange = (event) => {
                 reader.readAsDataURL(file);
             });
         } else {
-            // For non-image files, read without compression
             const reader = new FileReader();
             reader.onload = (e) => {
                 currentAttachment = {
@@ -142,9 +137,7 @@ let options = {
     maximumAge: 0,
   };
 
-// Setup Dialog Logic
 function initializeSetup() {
-    // Check if user has already completed setup
     let savedProfile = localStorage.getItem('userProfile');
     if (savedProfile) {
         userProfile = JSON.parse(savedProfile);
@@ -158,11 +151,9 @@ function initializeSetup() {
     }
 }
 
-// Profile picture preview
 profilePic.onchange = (event) => {
     let file = event.target.files[0];
     if (file) {
-        // Compress profile picture before storing
         compressImage(file).then((compressedData) => {
             userProfile.profilePicture = compressedData;
             profilePreview.style.backgroundImage = `url('${compressedData}')`;
@@ -215,17 +206,14 @@ function updateRGBColor() {
     
     userProfile.backgroundColor = { r, g, b };
     
-    // Update input fields
     redValue.value = r;
     greenValue.value = g;
     blueValue.value = b;
     
-    // Update preview
     const rgbColor = `rgb(${r}, ${g}, ${b})`;
     colorPreview.style.backgroundColor = rgbColor;
     rgbCode.textContent = rgbColor;
     
-    // Apply to body in real-time
     document.body.style.backgroundColor = rgbColor;
 }
 
@@ -265,13 +253,11 @@ setupForm.onsubmit = (event) => {
         return;
     }
     
-    // Save profile to local storage with error handling
     try {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     } catch (e) {
         if (e.name === 'QuotaExceededError') {
             console.warn('localStorage quota exceeded, clearing old data');
-            // Remove profile picture temporarily and try again
             const profileWithoutPic = { ...userProfile, profilePicture: null };
             try {
                 localStorage.setItem('userProfile', JSON.stringify(profileWithoutPic));
@@ -284,17 +270,13 @@ setupForm.onsubmit = (event) => {
         }
     }
     
-    // Apply background settings
     applyBackgroundSettings();
     
-    // Hide modal and proceed
     setupModal.classList.add('hidden');
     messageInput.removeAttribute("disabled");
 };
 
-// Apply background settings from userProfile
 function applyBackgroundSettings() {
-    // Apply background color
     if (userProfile.backgroundColor) {
         const { r, g, b } = userProfile.backgroundColor;
         document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
@@ -314,7 +296,6 @@ function connect(){
 
         navigator.geolocation.watchPosition(locationSuccess,locationError,options);
     
-        // Remove old event listeners to prevent stacking
         socket.off("receive");
         socket.off("nearby");
         
@@ -327,7 +308,6 @@ function connect(){
             messagePresence.innerText = "Other users in proximity: "+(count_obj["count"]).toString();
         });
     
-        
     }else{
         locationText.textContent = "Location: unavailable";
     }
@@ -399,11 +379,8 @@ function sendMessage(){
         "profilePicture": userProfile.profilePicture,
     };
 
-    // Add attachment if present
     if (currentAttachment) {
         message.attachment = currentAttachment;
-        
-        // Show loading indicator
         uploadLoading.classList.remove('hidden');
     }
 
@@ -417,14 +394,12 @@ function sendMessage(){
     console.log("hi");
     messageInput.value = "";
     
-    // Hide loading after a short delay
     if (currentAttachment) {
         setTimeout(() => {
             uploadLoading.classList.add('hidden');
         }, 500);
     }
     
-    // Clear attachment after sending
     currentAttachment = null;
     filePreview.classList.add('hidden');
     fileAttachmentInput.value = '';
@@ -447,7 +422,6 @@ function createMessage(id, messageText, senderName, profilePic, attachment = nul
     let msgElement = document.createElement("div");
     msgElement.classList.add("message");
 
-    // Handle system messages
     if (isSystemMessage) {
         msgElement.classList.add("system-message");
         
@@ -465,7 +439,6 @@ function createMessage(id, messageText, senderName, profilePic, attachment = nul
         msgElement.classList.add("self-message");
     }
 
-    // Create profile section
     let profileSection = document.createElement("div");
     profileSection.classList.add("message-profile");
 
@@ -489,7 +462,6 @@ function createMessage(id, messageText, senderName, profilePic, attachment = nul
 
     msgElement.appendChild(bubElement);
 
-    // Add sender name
     if (senderName) {
         let nameElement = document.createElement("p");
         nameElement.classList.add("message-sender-name");
@@ -503,26 +475,22 @@ function createMessage(id, messageText, senderName, profilePic, attachment = nul
 
     bubElement.appendChild(msgTextElement);
 
-    // Add attachment if present
     if (attachment) {
         const attachmentDiv = document.createElement("div");
         attachmentDiv.classList.add("message-attachment");
         
         if (attachment.type.startsWith('image/')) {
-            // Display image inline
             const img = document.createElement("img");
             img.src = attachment.data;
             img.classList.add("attached-image");
             img.alt = attachment.name;
             attachmentDiv.appendChild(img);
         } else {
-            // Display as download link
             const link = document.createElement("a");
             link.href = attachment.data;
             link.download = attachment.name;
             link.classList.add("attachment-link");
             
-            // Get file type icon
             const fileIcon = getFileTypeIcon(attachment.type);
             link.innerHTML = `${fileIcon} ${attachment.name}`;
             
@@ -544,7 +512,6 @@ function createMessage(id, messageText, senderName, profilePic, attachment = nul
     msgElement.scrollIntoView({ behavior: "smooth"});
 }
 
-// Helper function to get file type emoji icon
 function getFileTypeIcon(mimeType) {
     if (mimeType.includes('pdf')) return '📄';
     if (mimeType.includes('word') || mimeType.includes('document')) return '📝';
@@ -564,7 +531,6 @@ let markers = {};
 let allNearbyUsers = {};
 let mapUpdateInterval = null;
 
-// Create custom icon with profile picture
 function createCustomIcon(profilePicture, userName) {
     let html = '<div class="profile-marker">';
     if (profilePicture) {
@@ -583,13 +549,11 @@ function createCustomIcon(profilePicture, userName) {
     });
 }
 
-// Open map modal
 function openMapModal() {
     if (!mapModal) return;
     
     mapModal.classList.remove('hidden');
     
-    // Initialize map if not already done
     if (!map) {
         setTimeout(() => {
             initializeMap();
@@ -628,13 +592,12 @@ function initializeMap() {
 
     map = L.map('map').setView([initialLat, initialLon], initialZoom);
 
-    // Add OpenStreetMap tiles (free, no API key needed)
+    // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
     }).addTo(map);
 
-    // Add current user marker
     if (latitude && longitude) {
         const userMarker = L.marker([latitude, longitude], {
             icon: createCustomIcon(userProfile.profilePicture, userProfile.name),
@@ -652,19 +615,16 @@ function initializeMap() {
         markers[socket.id] = userMarker;
     }
 
-    // Request nearby users
     socket.emit('get_nearby_users', JSON.stringify({
         id: socket.id,
         lat: latitude,
         lon: longitude
     }));
 
-    // Start updating map every 7 seconds
     if (mapUpdateInterval) clearInterval(mapUpdateInterval);
     mapUpdateInterval = setInterval(updateMapMarkers, 7000);
 }
 
-// Update map markers with nearby users
 function updateMapMarkers() {
     if (!map) return;
 
@@ -683,19 +643,16 @@ socket.on('nearby_users_list', (data) => {
 
         if (!map) return;
 
-        // Update or add markers
         for (const userId in users) {
             const user = users[userId];
 
-            if (userId === socket.id) continue; // Skip self
+            if (userId === socket.id) continue; 
 
             if (markers[userId]) {
-                // Update existing marker
                 const oldMarker = markers[userId];
                 map.removeLayer(oldMarker);
             }
 
-            // Create new marker
             if (user.lat !== undefined && user.lon !== undefined) {
                 const marker = L.marker([user.lat, user.lon], {
                     icon: createCustomIcon(user.profilePicture, user.name),
@@ -714,7 +671,6 @@ socket.on('nearby_users_list', (data) => {
             }
         }
 
-        // Remove markers for users no longer nearby
         for (const markerId in markers) {
             if (markerId !== socket.id && !users[markerId]) {
                 if (markers[markerId]) {
@@ -734,7 +690,6 @@ socket.on('nearby_users_list', (data) => {
 function compressImage(file, skipCompression = false) {
     return new Promise((resolve, reject) => {
         if (skipCompression || !file.type.startsWith('image/')) {
-            // Skip compression for wallpaper or non-image files
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result);
             reader.onerror = reject;
@@ -749,7 +704,6 @@ function compressImage(file, skipCompression = false) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Reduce dimensions if image is too large
                 let width = img.width;
                 let height = img.height;
                 const MAX_WIDTH = 1024;
@@ -764,16 +718,12 @@ function compressImage(file, skipCompression = false) {
                 canvas.width = width;
                 canvas.height = height;
                 
-                // Draw image at reduced size
                 ctx.drawImage(img, 0, 0, width, height);
-                
-                // Compress to JPEG with 60% quality for better compression (reduced from 80%)
-                // Profile pics use 60%, chat images can be higher
+
                 try {
                     let quality = 0.6;
                     let compressedData = canvas.toDataURL('image/jpeg', quality);
                     
-                    // If still too large, reduce quality further
                     while (compressedData.length > 500000 && quality > 0.3) {
                         quality -= 0.1;
                         compressedData = canvas.toDataURL('image/jpeg', quality);
@@ -792,7 +742,6 @@ function compressImage(file, skipCompression = false) {
     });
 }
 
-// Initialize setup on page load
 window.addEventListener('load', () => {
     initializeSetup();
 });
