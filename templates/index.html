@@ -8,12 +8,10 @@
 	<!-- <link rel="stylesheet" href="styles.css" /> -->
 	<link rel="stylesheet" href="/static/styles.css" />
 	<link rel="shortcut icon" href="/static/favicon.jpeg" type="image/png">
-	<!-- Leaflet CSS for Map -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 </head>
 
 <body>
-	<!-- Setup Dialog Modal -->
 	<div id="setupModal" class="modal">
 		<div class="modal-content modal-scrollable">
 			<div class="modal-header">
@@ -37,7 +35,6 @@
 					<label for="locationConsent">I consent to share my location with nearby users</label>
 				</div>
 
-				<!-- Background Customization Section -->
 				<div class="form-section-divider">Background Customization</div>
 
 				<div class="form-group">
@@ -76,9 +73,7 @@
 		</div>
 	</div>
 
-	<!-- Main Chat Container -->
 	<div class="chat-container">
-		<!-- Header with Settings Button -->
 		<div class="chat-header">
 			<div class="header-left">
 				<h1>Wi-Fi Juxta</h1>
@@ -88,23 +83,18 @@
 			</div>
 		</div>
 
-		<!-- Messages Area -->
 		<div id="messages" class="messages">
 			<p class="message-status"><i id="messageStart">Waiting...</i></p>
 			<div class="message-margin"></div>
 		</div>
 
-		<!-- Floating Control Panel -->
 		<div class="floating-control-panel">
-			<!-- Location Info -->
 			<div class="location-info" id="locationContainer">
 				<div class="location-label">📍</div>
 				<p id="location" class="location-text">--.----º</p>
 			</div>
 
-			<!-- Message Input Area -->
 			<div class="message-input-container">
-				<!-- File Attachment Input -->
 				<input type="file" id="fileAttachment" accept="image/*,.pdf,.doc,.docx,.txt" style="display: none;">
 				<button id="attachBtn" class="control-btn attach-btn" title="Attach file">
 					📎
@@ -112,7 +102,6 @@
 				
 				<input type="text" name="message" id="messageInput" disabled placeholder="Type a message..." class="message-input-field" />
 				
-				<!-- Circular Send Button -->
 				<button id="messageButton" class="circular-send-btn" title="Send message">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<line x1="22" y1="2" x2="11" y2="13"></line>
@@ -120,13 +109,11 @@
 					</svg>
 				</button>
 
-				<!-- Map Button -->
 				<button id="locateButton" class="control-btn map-btn" title="View nearby users">
 					🗺️
 				</button>
 			</div>
 
-			<!-- File Preview -->
 			<div id="filePreview" class="file-preview hidden">
 				<div class="file-preview-content">
 					<span id="fileName" class="file-name"></span>
@@ -134,20 +121,17 @@
 				</div>
 			</div>
 
-			<!-- Upload Loading Indicator -->
 			<div id="uploadLoading" class="upload-loading hidden">
 				<div class="loading-spinner"></div>
 				<span class="loading-text">Uploading...</span>
 			</div>
 
-			<!-- Presence Info -->
 			<div class="presence-info">
 				<p id="messagePresence" class="presence-text">Waiting for server...</p>
 			</div>
 		</div>
 	</div>
 
-	<!-- Map Modal -->
 	<div id="mapModal" class="modal map-modal hidden">
 		<div class="map-modal-content">
 			<div class="map-header">
@@ -161,7 +145,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
 		integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
 		crossorigin="anonymous"></script>
-	<!-- Leaflet JS for Map -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 	<script src="/static/index.js"></script>
 </body>
